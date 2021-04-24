@@ -282,10 +282,15 @@ PlayerWrapper.prototype.onAdTimeout = function() {
  * Called when the player fires its 'ready' event.
  */
 PlayerWrapper.prototype.onPlayerReady = function() {
-  this.h5Player =
-      document.getElementById(
-          this.getPlayerId()).getElementsByClassName(
-              'vjs-tech')[0];
+  try {
+    this.h5Player =
+        document.getElementById(
+            this.getPlayerId()).getElementsByClassName(
+                'vjs-tech')[0];
+  } catch(e) {
+    console.warn(`element not found in dom, falling back to player api`);
+    this.h5Player = this.vjsPlayer.el().getElementsByClassName('vjs-tech')[0];
+  }
 
   // Detect inline options
   if (this.h5Player.hasAttribute('autoplay')) {
